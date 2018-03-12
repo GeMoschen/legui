@@ -6,18 +6,23 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joml.Vector2f;
 import org.liquidengine.legui.animation.Animation;
+import org.liquidengine.legui.binding.annotation.Bind;
+import org.liquidengine.legui.binding.annotation.BindClass;
+import org.liquidengine.legui.binding.annotation.Binding;
 import org.liquidengine.legui.component.misc.animation.scrollablepanel.ScrollablePanelAnimation;
 import org.liquidengine.legui.component.misc.listener.scrollablepanel.ScrollablePanelViewportScrollListener;
 import org.liquidengine.legui.component.optional.Orientation;
 import org.liquidengine.legui.event.ScrollEvent;
 import org.liquidengine.legui.style.Style.DisplayType;
-import org.liquidengine.legui.style.Style.PositionType;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.theme.Themes;
 
 /**
  * Panel with scroll bars. Default container layout is null.
  */
+@BindClass(to = "scrollablePanel", defaultBinding = true, unbind = {
+    @Binding(field = "childComponents")
+})
 public class ScrollablePanel extends Component implements Viewport {
 
     /**
@@ -28,11 +33,13 @@ public class ScrollablePanel extends Component implements Viewport {
     /**
      * Used to scroll panel vertically.
      */
+    @Bind
     private ScrollBar verticalScrollBar;
 
     /**
      * Used to scroll panel horizontally.
      */
+    @Bind
     private ScrollBar horizontalScrollBar;
 
     /**
@@ -43,6 +50,7 @@ public class ScrollablePanel extends Component implements Viewport {
     /**
      * Used to hold components added by user.
      */
+    @Bind
     private Component container;
     /**
      * Scrollable panel animation. Updates container position in viewport.

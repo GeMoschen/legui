@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -16,6 +17,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joml.Vector2f;
+import org.liquidengine.legui.binding.annotation.Bind;
+import org.liquidengine.legui.binding.annotation.BindClass;
+import org.liquidengine.legui.binding.annotation.BindGetter;
+import org.liquidengine.legui.binding.annotation.BindSetter;
+import org.liquidengine.legui.binding.custom.joml.Vector4f2Size;
 import org.liquidengine.legui.component.misc.listener.component.TabKeyEventListener;
 import org.liquidengine.legui.component.misc.listener.component.TooltipCursorEnterListener;
 import org.liquidengine.legui.event.CursorEnterEvent;
@@ -29,6 +35,7 @@ import org.liquidengine.legui.theme.Themes;
 /**
  * Component is an object that have graphical representation in legui system.
  */
+@BindClass(to = "component", defaultBinding = true)
 public abstract class Component implements Serializable {
     ////////////////////////////////
     //// COMPONENT BASE DATA
@@ -46,53 +53,63 @@ public abstract class Component implements Serializable {
      */
     private ListenerMap listenerMap = new ListenerMap();
     /**
-     * Position of component relative top left corner in parent component.
-     * <p>
-     * If component is the root component then position calculated relative window top left corner.
+     * Position of component relative top left corner in parent component. <p> If component is the root component then position calculated relative window top
+     * left corner.
      */
+    @Bind(to = "position")
     private Vector2f position = new Vector2f();
     /**
      * Size of component.
      */
+    @Bind(to = "size", usingBinding = Vector4f2Size.class)
     private Vector2f size = new Vector2f();
 
     /**
      * Used to enable and disable event processing for this component. If enabled==false then component won't receive events.
      */
+    @Bind
     private boolean enabled = true;
     /**
      * Determines whether this component should be visible when its parent is visible. Components are initially visible.
      */
+    @Bind
     private boolean visible = true;
     /**
      * Intersector which used to determine for example if cursor intersects component or not. Cannot be null.
      */
+    @Bind
     private Intersector intersector = new RectangleIntersector();
     /**
      * Determines whether this component hovered or not (cursor is over this component).
      */
+    @Bind
     private boolean hovered;
     /**
      * Determines whether this component focused or not.
      */
+    @Bind
     private boolean focused;
     /**
      * Determines whether this component pressed or not (Mouse button is down and on this component).
      */
+    @Bind
     private boolean pressed;
     /**
      * Tooltip.
      */
+    @Bind
     private Tooltip tooltip;
 
     /**
      * Tab index. Used to switch between components using tab key.
      */
+    @Bind
     private int tabIndex;
 
     /**
      * Show if component can be focused by tabbing.
      */
+    @Bind
     private boolean tabFocusable = true;
 
     ////////////////////////////////
@@ -102,28 +119,32 @@ public abstract class Component implements Serializable {
     /**
      * Component style.
      */
+    @Bind
     private Style style = new Style();
     /**
      * Component style.
      */
+    @Bind
     private Style hoveredStyle = new Style();
     /**
      * Component style.
      */
+    @Bind
     private Style focusedStyle = new Style();
     /**
      * Component style.
      */
+    @Bind
     private Style pressedStyle = new Style();
     /**
      * List of child components.
      */
+    @Bind(to = "childComponents")
     private List<Component> childComponents = new CopyOnWriteArrayList<>();
 
     /**
-     * Default constructor. Used to create component instance without any parameters.
-     * <p>
-     * Also if you want to make it easy to use with Json marshaller/unmarshaller component should contain empty constructor.
+     * Default constructor. Used to create component instance without any parameters. <p> Also if you want to make it easy to use with Json
+     * marshaller/unmarshaller component should contain empty constructor.
      */
     public Component() {
         this(0, 0, 10, 10);
@@ -209,9 +230,7 @@ public abstract class Component implements Serializable {
 
     /**
      * Used to set parent component. By default used by containers to attach component to container. Parent component used by renderers and event listeners and
-     * processors.
-     * <p>
-     * Don't use this method if you want to attach component to container. In this case use {@link Component#add(Component)} method.
+     * processors. <p> Don't use this method if you want to attach component to container. In this case use {@link Component#add(Component)} method.
      *
      * @param parent component container.
      */
@@ -371,7 +390,6 @@ public abstract class Component implements Serializable {
      * Used to determine if point intersects component (in screen space). This method uses component intersector.
      *
      * @param point point to check.
-     *
      * @return true if component intersected by point.
      */
     public boolean intersects(Vector2f point) {
@@ -539,7 +557,6 @@ public abstract class Component implements Serializable {
      * Returns count of child components.
      *
      * @return count of child components.
-     *
      * @see List#size()
      */
     public int count() {
@@ -550,7 +567,6 @@ public abstract class Component implements Serializable {
      * Returns true if component contains no elements.
      *
      * @return true if component contains no elements.
-     *
      * @see List#isEmpty()
      */
     public boolean isEmpty() {
@@ -561,9 +577,7 @@ public abstract class Component implements Serializable {
      * Returns true if component contains specified component.
      *
      * @param component component to check.
-     *
      * @return true if component contains specified component.
-     *
      * @see List#contains(Object)
      */
     public boolean contains(Component component) {
@@ -574,7 +588,6 @@ public abstract class Component implements Serializable {
      * Returns an iterator over the elements in this component. The elements are returned in no particular order.
      *
      * @return an iterator over the elements in this component.
-     *
      * @see List#iterator()
      */
     public Iterator<Component> containerIterator() {
@@ -585,9 +598,7 @@ public abstract class Component implements Serializable {
      * Used to add component to component.
      *
      * @param component component to add.
-     *
      * @return true if component is added.
-     *
      * @see List#add(Object)
      */
     public boolean add(Component component) {
@@ -605,7 +616,6 @@ public abstract class Component implements Serializable {
      * Used to check if component collection contains component or not. Checked by reference.
      *
      * @param component component to check.
-     *
      * @return true if collection contains provided component.
      */
     private boolean isContains(Component component) {
@@ -617,9 +627,10 @@ public abstract class Component implements Serializable {
      *
      * @param components components nodes to add.
      */
+    @BindSetter(forField="childComponents")
     public void addAll(Collection<? extends Component> components) {
         if (components != null) {
-            components.forEach(this::add);
+            components.stream().filter(Objects::nonNull).forEach(this::add);
         }
     }
 
@@ -643,9 +654,7 @@ public abstract class Component implements Serializable {
      * Used to remove component.
      *
      * @param component component to remove.
-     *
      * @return true if removed.
-     *
      * @see List#remove(Object)
      */
     public boolean remove(Component component) {
@@ -666,7 +675,6 @@ public abstract class Component implements Serializable {
      * Used to remove components.
      *
      * @param components components to remove.
-     *
      * @see List#removeAll(Collection)
      */
     public void removeAll(Collection<? extends Component> components) {
@@ -680,7 +688,6 @@ public abstract class Component implements Serializable {
      * are relayed to the caller.
      *
      * @param filter a predicate which returns true for elements to be removed.
-     *
      * @see List#removeIf(Predicate)
      */
     public void removeIf(Predicate<? super Component> filter) {
@@ -701,9 +708,7 @@ public abstract class Component implements Serializable {
      * Returns true if this Container contains all of the elements of the specified collection.
      *
      * @param components components collection to check.
-     *
      * @return true if this Container contains all of the elements of the specified collection.
-     *
      * @see List#containsAll(Collection)
      */
     public boolean containsAll(Collection<Component> components) {
@@ -714,7 +719,6 @@ public abstract class Component implements Serializable {
      * Returns a sequential Stream with this collection as its source.
      *
      * @return a sequential Stream with this collection as its source.
-     *
      * @see List#stream()
      */
     public Stream<Component> stream() {
@@ -725,7 +729,6 @@ public abstract class Component implements Serializable {
      * Returns a possibly parallel Stream with this collection as its source. It is allowable for this method to return a sequential stream.
      *
      * @return possibly parallel Stream with this collection as its source.
-     *
      * @see List#parallelStream()
      */
     public Stream<Component> parallelStream() {
@@ -742,12 +745,11 @@ public abstract class Component implements Serializable {
     }
 
     /**
-     * Used to retrieve child components as {@link List}.
-     * <p>
-     * <span style="color:red">NOTE: this method returns NEW {@link List} of components</span>.
+     * Used to retrieve child components as {@link List}. <p> <span style="color:red">NOTE: this method returns NEW {@link List} of components</span>.
      *
      * @return list of child components.
      */
+    @BindGetter(forField="childComponents")
     public List<Component> getChildComponents() {
         return new ArrayList<>(childComponents);
     }

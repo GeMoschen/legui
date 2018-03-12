@@ -15,7 +15,6 @@ public class ComponentChildComponentsAccessor extends AbstractFieldAccessor<Comp
      * Used to get childComponents of {@link Component}.
      *
      * @param object {@link Component} instance.
-     *
      * @return childComponents of component.
      */
     @Override
@@ -26,11 +25,7 @@ public class ComponentChildComponentsAccessor extends AbstractFieldAccessor<Comp
     @Override
     public void setFieldValue(Component object, List<Component> value) {
         if (value != null && !value.isEmpty()) {
-            for (Component listEntry : value) {
-                if (listEntry != null) {
-                    object.add(listEntry);
-                }
-            }
+            object.addAll(value);
         }
     }
 
