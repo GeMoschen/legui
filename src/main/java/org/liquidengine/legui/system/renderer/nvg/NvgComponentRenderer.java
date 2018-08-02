@@ -3,11 +3,10 @@ package org.liquidengine.legui.system.renderer.nvg;
 import static org.liquidengine.legui.system.renderer.nvg.NvgRenderer.NVG_CONTEXT;
 
 import org.liquidengine.legui.component.Component;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
+import org.liquidengine.legui.style.border.Border;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.system.context.Context;
 import org.liquidengine.legui.system.renderer.ComponentRenderer;
-import org.liquidengine.legui.system.renderer.nvg.border.NvgSimpleLineBorderRenderer;
 import org.liquidengine.legui.util.Utilites;
 
 /**
@@ -17,14 +16,15 @@ import org.liquidengine.legui.util.Utilites;
  */
 public abstract class NvgComponentRenderer<C extends Component> extends ComponentRenderer<C> {
 
-    private NvgSimpleLineBorderRenderer debugBorderRenderer = new NvgSimpleLineBorderRenderer();
-    private SimpleLineBorder debugBorder = new SimpleLineBorder(ColorConstants.red(), 1);
-    private SimpleLineBorder debugFocusBorder = new SimpleLineBorder(ColorConstants.blue(), 2);
+    private Border debugBorder = new Border();
+    private Border debugFocusBorder = new Border();
 
-    @Override
-    public void initialize() {
-        debugBorderRenderer.initialize();
+    {
+        debugBorder.setColor(ColorConstants.red());
+        debugFocusBorder.setColor(ColorConstants.blue());
+        debugFocusBorder.setWidth(2f);
     }
+
 
     /**
      * Used to render component.
@@ -41,9 +41,9 @@ public abstract class NvgComponentRenderer<C extends Component> extends Componen
         renderComponent(component, context, nanovgContext);
         if (context.isDebugEnabled()) {
             if (component.isFocused()) {
-                debugBorderRenderer.renderBorder(debugFocusBorder, component, context);
+                NvgRendererProvider.getInstance().getBorderRenderer(Border.class).renderBorder(debugFocusBorder, component, context);
             } else {
-                debugBorderRenderer.renderBorder(debugBorder, component, context);
+                NvgRendererProvider.getInstance().getBorderRenderer(Border.class).renderBorder(debugBorder, component, context);
             }
         }
     }

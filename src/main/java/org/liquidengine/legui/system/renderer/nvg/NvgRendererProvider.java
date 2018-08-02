@@ -24,15 +24,13 @@ import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.image.FBOImage;
 import org.liquidengine.legui.image.Image;
 import org.liquidengine.legui.image.LoadableImage;
-import org.liquidengine.legui.style.Border;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
+import org.liquidengine.legui.style.border.Border;
 import org.liquidengine.legui.system.renderer.BorderRenderer;
 import org.liquidengine.legui.system.renderer.ComponentRenderer;
 import org.liquidengine.legui.system.renderer.IconRenderer;
 import org.liquidengine.legui.system.renderer.ImageRenderer;
 import org.liquidengine.legui.system.renderer.RendererProvider;
 import org.liquidengine.legui.system.renderer.nvg.border.NvgDefaultBorderRenderer;
-import org.liquidengine.legui.system.renderer.nvg.border.NvgSimpleLineBorderRenderer;
 import org.liquidengine.legui.system.renderer.nvg.component.NvgButtonRenderer;
 import org.liquidengine.legui.system.renderer.nvg.component.NvgCheckBoxRenderer;
 import org.liquidengine.legui.system.renderer.nvg.component.NvgDefaultComponentRenderer;
@@ -80,14 +78,14 @@ public class NvgRendererProvider extends RendererProvider {
         componentRendererMap.put(ProgressBar.class, new NvgProgressBarRenderer());
         componentRendererMap.put(RadioButton.class, new NvgRadioButtonRenderer());
         componentRendererMap.put(ScrollBar.class, new NvgScrollBarRenderer());
-        componentRendererMap.put(Slider.class, new NvgSliderRenderer());
+        componentRendererMap.put(Slider.class, new NvgSliderRenderer<>());
         componentRendererMap.put(TextAreaField.class, new NvgTextAreaFieldRenderer());
         componentRendererMap.put(TextInput.class, new NvgTextInputRenderer());
         componentRendererMap.put(PasswordInput.class, new NvgPasswordInputRenderer());
         componentRendererMap.put(Tooltip.class, new NvgTooltipRenderer());
 
         // register border renderers
-        borderRendererMap.put(SimpleLineBorder.class, new NvgSimpleLineBorderRenderer());
+        borderRendererMap.put(Border.class, new NvgDefaultBorderRenderer<>());
 
         // register icon renderers
         iconRendererMap.put(ImageIcon.class, new NvgImageIconRenderer<>());

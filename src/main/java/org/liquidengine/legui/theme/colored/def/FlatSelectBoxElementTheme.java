@@ -27,7 +27,7 @@ public class FlatSelectBoxElementTheme<T extends SelectBox.SelectBoxElement> ext
     @Override
     public void apply(T component) {
         super.apply(component);
-        component.getStyle().setBorder(null);
+        component.getStyle().getBorder().setWidth(null);
         component.getStyle().setShadow(null);
         component.getStyle().getBackground().setColor(ColorConstants.transparent());
         component.getTextState().setTextColor(ColorUtil.oppositeBlackOrWhite(settings.backgroundColor()));

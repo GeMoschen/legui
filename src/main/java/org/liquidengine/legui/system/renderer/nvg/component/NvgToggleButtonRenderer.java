@@ -3,6 +3,7 @@ package org.liquidengine.legui.system.renderer.nvg.component;
 import static org.liquidengine.legui.system.renderer.nvg.NvgRenderer.renderIcon;
 import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.createScissorByParent;
 import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.getBorderRadius;
+import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.getShadow;
 import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.resetScissor;
 import static org.lwjgl.nanovg.NanoVG.nvgIntersectScissor;
 
@@ -78,7 +79,7 @@ public class NvgToggleButtonRenderer extends NvgDefaultComponentRenderer<ToggleB
             }
         }
 
-        NvgRenderUtils.renderShadow(nvg, agui);
+        NvgRenderUtils.renderShadow(nvg, getShadow(agui), agui.getAbsolutePosition(), agui.getSize(), getBorderRadius(agui));
 
         boolean toggled = agui.isToggled();
         if (toggled) {

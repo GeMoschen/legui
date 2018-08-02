@@ -132,7 +132,7 @@ public class TextArea extends Component implements TextComponent, Viewport {
         viewport = new TextAreaViewport(0, 0, viewportWidth, viewportHeight);
 
         viewport.getStyle().getBackground().setColor(1, 1, 1, 0);
-        viewport.getStyle().setBorder(null);
+        viewport.getStyle().getBorder().setWidth(null);
         viewport.getStyle().setTop(0f);
         viewport.getStyle().setLeft(0f);
         viewport.getStyle().setBottom(INITIAL_SCROLL_SIZE);
@@ -142,7 +142,7 @@ public class TextArea extends Component implements TextComponent, Viewport {
 
         textAreaField = new TextAreaField(0, 0, viewportWidth, viewportHeight);
 
-        textAreaField.getStyle().setBorder(null);
+        textAreaField.getStyle().getBorder().setWidth(null);
         textAreaField.setTabFocusable(false);
         textAreaField.getListenerMap().addListener(TextAreaFieldUpdateEvent.class, new TextAreaFieldUpdateListener(this));
         viewport.add(textAreaField);

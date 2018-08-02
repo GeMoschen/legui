@@ -131,7 +131,7 @@ public class ScrollablePanel extends Component implements Viewport {
         viewport = new ScrollablePanelViewport(0, 0, viewportWidth, viewportHeight);
 
         viewport.getStyle().getBackground().setColor(1, 1, 1, 0);
-        viewport.getStyle().setBorder(null);
+        viewport.getStyle().getBorder().setWidth(null);
         viewport.getStyle().setTop(0f);
         viewport.getStyle().setLeft(0f);
         viewport.getStyle().setBottom(INITIAL_SCROLL_SIZE);
@@ -141,7 +141,7 @@ public class ScrollablePanel extends Component implements Viewport {
 
         container = new ScrollablePanelContainer(0, 0, viewportWidth, viewportHeight);
 
-        container.getStyle().setBorder(null);
+        container.getStyle().getBorder().setWidth(null);
         container.setTabFocusable(false);
         viewport.add(container);
 

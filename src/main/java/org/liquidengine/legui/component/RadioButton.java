@@ -125,7 +125,7 @@ public class RadioButton extends Component implements TextComponent {
      */
     private void initialize(String text) {
         textState = new TextState(text);
-        getStyle().setBorder(null);
+        getStyle().getBorder().setWidth(null);
         getListenerMap().addListener(MouseClickEvent.class, new RadioButtonClickEventListener());
         iconUnchecked.setHorizontalAlign(HorizontalAlign.LEFT);
         iconChecked.setHorizontalAlign(HorizontalAlign.LEFT);

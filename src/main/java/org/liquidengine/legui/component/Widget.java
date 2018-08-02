@@ -164,7 +164,6 @@ public class Widget extends Component {
         titleContainer.getStyle().getFlexStyle().setFlexDirection(FlexDirection.ROW);
 
         this.title = new Label(title);
-//        this.title.getStyle().setPadding(5f, 10f);
         this.title.getStyle().setPosition(PositionType.RELATIVE);
         this.title.getStyle().setMaxWidth(Float.MAX_VALUE);
         this.title.getStyle().setMaxHeight((float) INITIAL_TITLE_HEIGHT);
@@ -172,7 +171,7 @@ public class Widget extends Component {
         this.title.getStyle().setMinWidth(0f);
         this.title.getStyle().setMinHeight((float) INITIAL_TITLE_HEIGHT);
         this.title.getStyle().getBackground().setColor(ColorConstants.transparent());
-        this.title.getStyle().setBorder(null);
+        this.title.getStyle().getBorder().setWidth(null);
         this.title.getStyle().getFlexStyle().setFlexGrow(1);
         this.title.getStyle().getFlexStyle().setFlexShrink(1);
         this.title.setTabFocusable(false);
@@ -195,7 +194,7 @@ public class Widget extends Component {
         closeButton.getStyle().setMinHeight((float) INITIAL_TITLE_HEIGHT);
         closeButton.getStyle().setWidth((float) INITIAL_TITLE_HEIGHT);
         closeButton.getStyle().setHeight((float) INITIAL_TITLE_HEIGHT);
-        closeButton.getStyle().setBorder(null);
+        closeButton.getStyle().getBorder().setWidth(null);
         closeButton.getStyle().getFlexStyle().setFlexGrow(1);
         closeButton.getStyle().getFlexStyle().setFlexShrink(1);
 
@@ -232,7 +231,7 @@ public class Widget extends Component {
         minimizeButton.getStyle().setHeight((float) INITIAL_TITLE_HEIGHT);
         minimizeButton.getStyle().getFlexStyle().setFlexGrow(1);
         minimizeButton.getStyle().getFlexStyle().setFlexShrink(1);
-        minimizeButton.getStyle().setBorder(null);
+        minimizeButton.getStyle().getBorder().setWidth(null);
 
         minimizeButton.getListenerMap().addListener(MouseClickEvent.class, new WidgetMinimizeButMouseClickEventListener(this));
         minimizeButton.getTextState().setVerticalAlign(VerticalAlign.MIDDLE);
@@ -258,7 +257,7 @@ public class Widget extends Component {
         resizeButton.getStyle().setHeight(10f);
         resizeButton.getStyle().setBottom(0f);
         resizeButton.getStyle().setRight(0f);
-        resizeButton.getStyle().setBorder(null);
+        resizeButton.getStyle().getBorder().setWidth(null);
         resizeButton.getStyle().getBackground().setColor(ColorConstants.transparent());
         resizeButton.setTabFocusable(false);
         resizeButton.getListenerMap().addListener(MouseDragEvent.class, new WidgetResizeButtonDragListener(resizeButton, this));

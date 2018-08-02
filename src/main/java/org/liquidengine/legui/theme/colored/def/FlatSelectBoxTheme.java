@@ -40,10 +40,10 @@ public class FlatSelectBoxTheme<T extends SelectBox> extends FlatComponentTheme<
             component.getStyle().setShadow(null);
         }
 
-        component.getExpandButton().getStyle().setBorder(null);
+        component.getExpandButton().getStyle().getBorder().setWidth(null);
         component.getExpandButton().getStyle().getBackground().setColor(ColorConstants.transparent());
 
-        component.getSelectionButton().getStyle().setBorder(null);
+        component.getSelectionButton().getStyle().getBorder().setWidth(null);
         component.getSelectionButton().getStyle().getBackground().setColor(ColorConstants.transparent());
         component.getSelectionButton().getTextState().setTextColor(ColorUtil.oppositeBlackOrWhite(settings.backgroundColor()));
 

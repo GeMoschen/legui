@@ -534,7 +534,7 @@ public class SelectBox extends Component {
             super(text == null ? "null" : text);
             this.selected = selected;
             this.text = text;
-            this.getStyle().setBorder(null);
+            this.getStyle().getBorder().setWidth(null);
 
             Themes.getDefaultTheme().apply(this);
         }

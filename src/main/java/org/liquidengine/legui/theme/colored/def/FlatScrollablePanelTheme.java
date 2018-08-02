@@ -3,7 +3,6 @@ package org.liquidengine.legui.theme.colored.def;
 import org.joml.Vector4f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.ScrollablePanel;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.color.ColorUtil;
 import org.liquidengine.legui.style.shadow.Shadow;
@@ -48,8 +47,10 @@ public class FlatScrollablePanelTheme<T extends ScrollablePanel> extends FlatCom
         viewport.getStyle().getBackground().setColor(ColorConstants.transparent());
         component.getContainer().getStyle().getBackground().setColor(new Vector4f(bgc));
 
-        component.getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
-        component.getViewport().getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
+        component.getStyle().getBorder().setColor(settings.borderColor());
+        component.getStyle().getBorder().setWidth(1f);
+        component.getViewport().getStyle().getBorder().setColor(settings.borderColor());
+        component.getViewport().getStyle().getBorder().setWidth(1f);
     }
 
 }

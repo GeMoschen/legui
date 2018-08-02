@@ -1,9 +1,10 @@
-package org.liquidengine.legui.style;
+package org.liquidengine.legui.style.background;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.style.color.ColorConstants;
+import org.liquidengine.legui.style.gradient.Gradient;
 
 /**
  * The type Background.
@@ -16,7 +17,7 @@ public class Background {
     private Icon icon;
     private Vector2f position;
     private Vector2f size;
-
+    private Gradient gradient;
 
     /**
      * Returns {@link Vector4f} background color vector where x,y,z,w mapped to r,g,b,a values. <ul> <li>vector.x - red.</li> <li>vector.y - green.</li>

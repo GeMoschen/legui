@@ -4,7 +4,6 @@ import org.joml.Vector4f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.ScrollablePanel;
 import org.liquidengine.legui.component.TextArea;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.color.ColorUtil;
 import org.liquidengine.legui.style.shadow.Shadow;
@@ -48,8 +47,10 @@ public class FlatTextAreaTheme<T extends TextArea> extends FlatComponentTheme<T>
         Themes.getDefaultTheme().applyAll(component.getHorizontalScrollBar());
         viewport.getStyle().getBackground().setColor(ColorConstants.transparent());
 
-        component.getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
-        component.getViewport().getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
+        component.getStyle().getBorder().setColor(settings.borderColor());
+        component.getStyle().getBorder().setWidth(1f);
+        component.getViewport().getStyle().getBorder().setColor(settings.borderColor());
+        component.getViewport().getStyle().getBorder().setWidth(1f);
     }
 
 }

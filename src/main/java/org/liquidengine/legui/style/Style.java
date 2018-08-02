@@ -1,7 +1,8 @@
 package org.liquidengine.legui.style;
 
 import org.joml.Vector4f;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
+import org.liquidengine.legui.style.background.Background;
+import org.liquidengine.legui.style.border.Border;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.flex.FlexStyle;
 import org.liquidengine.legui.style.font.Font;
@@ -21,13 +22,8 @@ public class Style {
 
     private FlexStyle flexStyle = new FlexStyle();
     private Background background = new Background();
-    private Border border = new SimpleLineBorder(ColorConstants.gray(), 1);
+    private Border border = new Border();
     private Font font = FontRegistry.getFont(FontRegistry.DEFAULT);
-
-    private Float borderTopLeftRadius;
-    private Float borderTopRightRadius;
-    private Float borderBottomRightRadius;
-    private Float borderBottomLeftRadius;
 
     private Float width;
     private Float height;
@@ -69,8 +65,7 @@ public class Style {
      * @param topRightBottomLeft top right and bottom left radius.
      */
     public void setBorderRadius(Float topLeftBottomRight, Float topRightBottomLeft) {
-        borderTopLeftRadius = borderBottomRightRadius = topLeftBottomRight;
-        borderTopRightRadius = borderBottomLeftRadius = topRightBottomLeft;
+        border.setBorderRadius(topLeftBottomRight, topRightBottomLeft);
     }
 
     /**
@@ -81,9 +76,7 @@ public class Style {
      * @param topRightBottomLeft top right and bottom left radius.
      */
     public void setBorderRadius(Float topLeft, Float topRightBottomLeft, Float bottomRight) {
-        borderTopLeftRadius = topLeft;
-        borderTopRightRadius = borderBottomLeftRadius = topRightBottomLeft;
-        borderBottomRightRadius = bottomRight;
+        border.setBorderRadius(topLeft, topRightBottomLeft, bottomRight);
     }
 
     /**
@@ -95,10 +88,7 @@ public class Style {
      * @param bottomLeft bottom left radius.
      */
     public void setBorderRadius(Float topLeft, Float topRight, Float bottomRight, Float bottomLeft) {
-        borderTopLeftRadius = topLeft;
-        borderTopRightRadius = topRight;
-        borderBottomRightRadius = bottomRight;
-        borderBottomLeftRadius = bottomLeft;
+        border.setBorderRadius(topLeft, topRight, bottomRight, bottomLeft);
     }
 
     /**
@@ -107,10 +97,7 @@ public class Style {
      * @return vector of four border radius.
      */
     public Vector4f getBorderRadius() {
-        return new Vector4f(borderTopLeftRadius == null ? 0 : borderTopLeftRadius,
-                            borderTopRightRadius == null ? 0 : borderTopRightRadius,
-                            borderBottomRightRadius == null ? 0 : borderBottomRightRadius,
-                            borderBottomLeftRadius == null ? 0 : borderBottomLeftRadius);
+        return border.getBorderRadius();
     }
 
     /**
@@ -119,8 +106,7 @@ public class Style {
      * @param radius radius to set. Sets border radius to all corners.
      */
     public void setBorderRadius(Float radius) {
-        borderTopLeftRadius = borderTopRightRadius =
-            borderBottomRightRadius = borderBottomLeftRadius = radius;
+        border.setBorderRadius(radius);
     }
 
     /**
@@ -129,7 +115,7 @@ public class Style {
      * @return top left border radius.
      */
     public Float getBorderTopLeftRadius() {
-        return borderTopLeftRadius;
+        return border.getTopLeftRadius();
     }
 
     /**
@@ -138,7 +124,7 @@ public class Style {
      * @param borderTopLeftRadius top left border radius.
      */
     public void setBorderTopLeftRadius(Float borderTopLeftRadius) {
-        this.borderTopLeftRadius = borderTopLeftRadius;
+        border.setTopLeftRadius(borderTopLeftRadius);
     }
 
     /**
@@ -147,7 +133,7 @@ public class Style {
      * @return top right border radius.
      */
     public Float getBorderTopRightRadius() {
-        return borderTopRightRadius;
+        return border.getTopRightRadius();
     }
 
 
@@ -157,7 +143,7 @@ public class Style {
      * @param borderTopRightRadius top right border radius.
      */
     public void setBorderTopRightRadius(Float borderTopRightRadius) {
-        this.borderTopRightRadius = borderTopRightRadius;
+        border.setTopRightRadius(borderTopRightRadius);
     }
 
     /**
@@ -166,7 +152,7 @@ public class Style {
      * @return bottom right border radius.
      */
     public Float getBorderBottomRightRadius() {
-        return borderBottomRightRadius;
+        return border.getBottomRightRadius();
     }
 
 
@@ -176,7 +162,7 @@ public class Style {
      * @param borderBottomRightRadius bottom right border radius.
      */
     public void setBorderBottomRightRadius(Float borderBottomRightRadius) {
-        this.borderBottomRightRadius = borderBottomRightRadius;
+        border.setBottomRightRadius(borderBottomRightRadius);
     }
 
     /**
@@ -185,7 +171,7 @@ public class Style {
      * @return bottom left border radius.
      */
     public Float getBorderBottomLeftRadius() {
-        return borderBottomLeftRadius;
+        return border.getBottomLeftRadius();
     }
 
 
@@ -195,7 +181,7 @@ public class Style {
      * @param borderBottomLeftRadius bottom left border radius.
      */
     public void setBorderBottomLeftRadius(Float borderBottomLeftRadius) {
-        this.borderBottomLeftRadius = borderBottomLeftRadius;
+        border.setBottomLeftRadius(borderBottomLeftRadius);
     }
 
     /**
@@ -491,15 +477,6 @@ public class Style {
      */
     public Border getBorder() {
         return border;
-    }
-
-    /**
-     * Sets border.
-     *
-     * @param border the border
-     */
-    public void setBorder(Border border) {
-        this.border = border;
     }
 
     /**

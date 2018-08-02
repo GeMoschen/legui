@@ -33,7 +33,6 @@ import org.liquidengine.legui.event.MouseClickEvent;
 import org.liquidengine.legui.listener.CursorEnterEventListener;
 import org.liquidengine.legui.listener.MouseClickEventListener;
 import org.liquidengine.legui.listener.processor.EventProcessor;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.system.context.CallbackKeeper;
 import org.liquidengine.legui.system.context.Context;
@@ -179,8 +178,8 @@ public class SingleClassExample {
         frame.getContainer().getStyle().getBackground().setColor(ColorConstants.lightBlue());
 
         Button button = new Button("Add components", 20, 20, 160, 30);
-        SimpleLineBorder border = new SimpleLineBorder(ColorConstants.black(), 1);
-        button.getStyle().setBorder(border);
+        button.getStyle().getBorder().setColor(ColorConstants.black());
+        button.getStyle().getBorder().setWidth(1f);
 
         boolean[] added = {false};
         button.getListenerMap().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {

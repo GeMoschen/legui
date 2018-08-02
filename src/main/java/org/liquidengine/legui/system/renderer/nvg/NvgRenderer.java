@@ -19,7 +19,7 @@ import org.joml.Vector2i;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.image.Image;
-import org.liquidengine.legui.style.Border;
+import org.liquidengine.legui.style.border.Border;
 import org.liquidengine.legui.style.font.Font;
 import org.liquidengine.legui.style.font.FontRegistry;
 import org.liquidengine.legui.system.context.Context;
@@ -52,7 +52,7 @@ public class NvgRenderer extends AbstractRenderer {
      */
     public static void renderBorder(Component component, Context context) {
         Border border = component.getStyle().getBorder();
-        if (border != null && border.isEnabled()) {
+        if (border != null) {
             // Render border
             BorderRenderer borderRenderer = RendererProvider.getInstance().getBorderRenderer(border.getClass());
             borderRenderer.render(border, component, context);

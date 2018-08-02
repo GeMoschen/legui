@@ -15,11 +15,10 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.nanovg.NanoVG.nvgBeginFrame;
 import static org.lwjgl.nanovg.NanoVG.nvgBeginPath;
 import static org.lwjgl.nanovg.NanoVG.nvgEndFrame;
-import static org.lwjgl.nanovg.NanoVG.nvgFill;
-import static org.lwjgl.nanovg.NanoVG.nvgFillColor;
 import static org.lwjgl.nanovg.NanoVG.nvgRect;
-import static org.lwjgl.nanovg.NanoVG.nvgResetScissor;
-import static org.lwjgl.nanovg.NanoVG.nvgScissor;
+import static org.lwjgl.nanovg.NanoVG.nvgStroke;
+import static org.lwjgl.nanovg.NanoVG.nvgStrokePaint;
+import static org.lwjgl.nanovg.NanoVG.nvgStrokeWidth;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -34,8 +33,11 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
+import org.liquidengine.legui.system.renderer.nvg.util.NvgColorUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.nanovg.NVGPaint;
+import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL;
 
@@ -125,19 +127,35 @@ public class MultipleWindowsNanoVG {
     }
 
     private static void renderNVG(long nvgContext) {
-        nvgScissor(nvgContext, 10, 10, WIDTH - 20, HEIGHT - 20);
-        {
+//        nvgScissor(nvgContext, 10, 10, WIDTH - 20, HEIGHT - 20);
+//        {
             NVGColor nvgColor = NVGColor.calloc();
-            nvgColor.r(1);
-            nvgColor.g(0);
-            nvgColor.b(0);
-            nvgColor.a(1);
+            NVGColor nvgColor1 = NVGColor.calloc();
+            NVGColor nvgColor2 = NVGColor.calloc();
+            NVGPaint nvgPaint = NVGPaint.calloc();
+
+            NvgColorUtil.rgba(1, 0, 0, 1, nvgColor);
+            NvgColorUtil.rgba(1, 0, 0, 1, nvgColor1);
+            NvgColorUtil.rgba(171f/255f, 0, 0, 1, nvgColor2);
+
+            NanoVG.nvgLinearGradient(nvgContext, WIDTH/2f-0.001f,HEIGHT/2f-0.001f, WIDTH/2f, HEIGHT/2f, nvgColor1, nvgColor2, nvgPaint);
+
+//            nvgBeginPath(nvgContext);
+//            nvgFillColor(nvgContext, nvgColor);
+//            nvgRect(nvgContext, 10, 10, WIDTH - 20, HEIGHT - 20);
+//            nvgFill(nvgContext);
+//
             nvgBeginPath(nvgContext);
-            nvgFillColor(nvgContext, nvgColor);
-            nvgRect(nvgContext, 0, 0, WIDTH, HEIGHT);
-            nvgFill(nvgContext);
+            nvgRect(nvgContext, 20, 20, WIDTH - 40, HEIGHT - 40);
+            nvgStrokeWidth(nvgContext, 10);
+            nvgStrokePaint(nvgContext, nvgPaint);
+            nvgStroke(nvgContext);
+
             nvgColor.free();
-        }
-        nvgResetScissor(nvgContext);
+            nvgColor1.free();
+            nvgColor2.free();
+            nvgPaint.free();
+//        }
+//        nvgResetScissor(nvgContext);
     }
 }

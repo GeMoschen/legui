@@ -91,7 +91,7 @@ public class Label extends Component implements TextComponent {
     private void initialize(String text) {
         textState.setText(text);
         getStyle().getBackground().setColor(ColorConstants.transparent());
-        getStyle().setBorder(null);
+        getStyle().getBorder().setWidth(null);
         Themes.getDefaultTheme().getThemeManager().getComponentTheme(Label.class).applyAll(this);
     }
 

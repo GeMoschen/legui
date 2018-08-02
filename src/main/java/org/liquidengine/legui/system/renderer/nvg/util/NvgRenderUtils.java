@@ -231,6 +231,23 @@ public final class NvgRenderUtils {
         return r;
     }
 
+    public static Shadow getShadow(Component component) {
+        Style style = component.getStyle();
+        Shadow shadow = style.getShadow();
+
+        if (component.isFocused() && component.getFocusedStyle().getShadow() != null) {
+            shadow = component.getFocusedStyle().getShadow();
+        }
+        if (component.isHovered() && component.getHoveredStyle().getShadow() != null) {
+            shadow = component.getHoveredStyle().getShadow();
+        }
+        if (component.isPressed() && component.getPressedStyle().getShadow() != null) {
+            shadow = component.getPressedStyle().getShadow();
+        }
+
+        return shadow;
+    }
+
     private static void applyCurrentRadius(Vector4f r, Style curr) {
         if (curr.getBorderTopLeftRadius() != null) {
             r.x = curr.getBorderTopLeftRadius();
@@ -246,21 +263,17 @@ public final class NvgRenderUtils {
         }
     }
 
-    public static void renderShadow(long context, Component component) {
-        Shadow shadow = component.getStyle().getShadow();
+    public static void renderShadow(long context, Shadow shadow, Vector2f absolutePosition, Vector2f size, Vector4f borderRadius) {
         if (shadow != null && shadow.getColor() != null && shadow.getColor().w > 0.01f) {
             float hOffset = shadow.gethOffset();
             float vOffset = shadow.getvOffset();
             float blur = shadow.getBlur();
             float spread = shadow.getSpread();
-            Vector2f absolutePosition = component.getAbsolutePosition();
-            Vector2f size = component.getSize();
 
             float x = absolutePosition.x;
             float y = absolutePosition.y;
             float w = size.x;
             float h = size.y;
-            Vector4f borderRadius = component.getStyle().getBorderRadius();
             float cornerRadius = (borderRadius.x + borderRadius.y + borderRadius.z + borderRadius.w) / 4;
 
             NVGPaint shadowPaint = NVGPaint.calloc();

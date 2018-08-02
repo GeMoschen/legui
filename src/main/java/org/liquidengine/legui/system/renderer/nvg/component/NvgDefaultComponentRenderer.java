@@ -4,10 +4,12 @@ import static org.liquidengine.legui.system.renderer.nvg.NvgRenderer.renderBorde
 import static org.liquidengine.legui.system.renderer.nvg.NvgRenderer.renderIcon;
 import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.createScissor;
 import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.getBorderRadius;
+import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.getShadow;
 import static org.liquidengine.legui.system.renderer.nvg.util.NvgRenderUtils.resetScissor;
 import static org.lwjgl.nanovg.NanoVG.nvgRestore;
 import static org.lwjgl.nanovg.NanoVG.nvgSave;
 
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.icon.Icon;
@@ -61,6 +63,9 @@ public class NvgDefaultComponentRenderer<C extends Component> extends NvgCompone
         boolean hovered = component.isHovered();
         boolean pressed = component.isPressed();
 
+        Vector2f absolutePosition = component.getAbsolutePosition();
+        Vector2f size = component.getSize();
+
         Style style = component.getStyle();
         Style currStyle = component.getStyle();
 
@@ -96,10 +101,10 @@ public class NvgDefaultComponentRenderer<C extends Component> extends NvgCompone
             }
         }
 
-        NvgRenderUtils.renderShadow(nanovg, component);
+        NvgRenderUtils.renderShadow(nanovg, getShadow(component), absolutePosition, size, getBorderRadius(component));
 
         nvgSave(nanovg);
-        NvgShapes.drawRect(nanovg, component.getAbsolutePosition(), component.getSize(), bgColor, cornerRadius);
+        NvgShapes.drawRect(nanovg, absolutePosition, size, bgColor, cornerRadius);
         if (bgIcon != null) {
             renderIcon(bgIcon, component, context);
         }

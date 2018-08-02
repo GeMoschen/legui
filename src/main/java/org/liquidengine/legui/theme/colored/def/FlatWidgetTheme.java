@@ -8,7 +8,6 @@ import org.liquidengine.legui.component.optional.align.HorizontalAlign;
 import org.liquidengine.legui.component.optional.align.VerticalAlign;
 import org.liquidengine.legui.icon.CharIcon;
 import org.liquidengine.legui.icon.Icon;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.color.ColorUtil;
 import org.liquidengine.legui.style.font.FontRegistry;
@@ -49,13 +48,11 @@ public class FlatWidgetTheme<T extends Widget> extends FlatComponentTheme<T> {
         Button minimizeButton = component.getMinimizeButton();
         minimizeButton.getStyle().getBackground().setColor(settings.allowColor());
         minimizeButton.getHoveredStyle().getBackground().setColor(settings.allowColor().add(ColorUtil.oppositeBlackOrWhite(settings.allowColor())).div(2));
-        minimizeButton.getStyle().setBorder(null);
         minimizeButton.getTextState().setTextColor(ColorUtil.oppositeBlackOrWhite(settings.allowColor()));
 
         component.getCloseButton().getStyle().getBackground().setColor(settings.denyColor());
         component.getCloseButton().getHoveredStyle().getBackground()
             .setColor(settings.denyColor().add(ColorUtil.oppositeBlackOrWhite(settings.denyColor())).div(2));
-        component.getCloseButton().getStyle().setBorder(null);
         component.getCloseButton().getTextState().setTextColor(ColorUtil.oppositeBlackOrWhite(settings.denyColor()));
 
         component.getTitleContainer().getStyle().getBackground().setColor(settings.backgroundColor());
@@ -63,7 +60,6 @@ public class FlatWidgetTheme<T extends Widget> extends FlatComponentTheme<T> {
         component.getResizeButton().getStyle().getBackground().setColor(ColorConstants.transparent());
         component.getResizeButton().getHoveredStyle().getBackground().setColor(ColorConstants.transparent());
         component.getResizeButton().getPressedStyle().getBackground().setColor(ColorConstants.transparent());
-        component.getResizeButton().getStyle().setBorder(null);
 
         CharIcon icon = new CharIcon(FontRegistry.MATERIAL_DESIGN_ICONS, '\uF45D');
         icon.setSize(new Vector2f(20, 20));
@@ -100,16 +96,21 @@ public class FlatWidgetTheme<T extends Widget> extends FlatComponentTheme<T> {
 
         Themes.getDefaultTheme().applyAll(component.getContainer());
         component.getContainer().getStyle().getBackground().setColor(settings.backgroundColor());
-        component.getContainer().getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
+        component.getContainer().getStyle().getBorder().setColor(settings.borderColor());
+        component.getContainer().getStyle().getBorder().setWidth(1f);
         component.getContainer().getStyle().setShadow(null);
 
-        component.getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
-        component.getTitleContainer().getStyle().setBorder(new SimpleLineBorder(settings.borderColor(), 1));
+        component.getStyle().getBorder().setColor(settings.borderColor());
+        component.getStyle().getBorder().setWidth(1f);
+
+        component.getTitleContainer().getStyle().getBorder().setColor(settings.borderColor());
+        component.getTitleContainer().getStyle().getBorder().setWidth(1f);
         component.getTitleContainer().getStyle().setShadow(null);
 
         component.getCloseButton().getStyle().setShadow(null);
         minimizeButton.getStyle().setShadow(null);
         component.getResizeButton().getStyle().setShadow(null);
+        component.getResizeButton().getStyle().getBorder().setWidth(null);
 
     }
 }

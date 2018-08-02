@@ -32,7 +32,7 @@ public class FlatRadioButtonTheme<T extends RadioButton> extends FlatComponentTh
     @Override
     public void apply(T component) {
         super.apply(component);
-        component.getStyle().setBorder(null);
+        component.getStyle().getBorder().setWidth(null);
         component.getStyle().getBackground().setColor(ColorConstants.transparent());
         component.getTextState().setTextColor(ColorUtil.oppositeBlackOrWhite(settings.backgroundColor()));
         component.setIconUnchecked(

@@ -29,6 +29,6 @@ public class FlatSliderTheme<T extends Slider> extends FlatComponentTheme<T> {
         component.getStyle().getBackground().setColor(ColorConstants.transparent());
         component.setSliderColor(settings.borderColor());
         component.setSliderActiveColor(settings.allowColor());
-        component.getStyle().setBorder(null);
+        component.getStyle().getBorder().setWidth(null);
     }
 }

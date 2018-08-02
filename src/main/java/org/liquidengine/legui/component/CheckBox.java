@@ -115,7 +115,7 @@ public class CheckBox extends Component implements TextComponent {
     private void initialize(String text) {
         this.textState = new TextState(text);
         getStyle().getBackground().setColor(ColorConstants.transparent());
-        getStyle().setBorder(null);
+        getStyle().getBorder().setWidth(null);
 
         getListenerMap().addListener(MouseClickEvent.class, new CheckBoxMouseClickEventListener());
         iconChecked.setHorizontalAlign(HorizontalAlign.LEFT);

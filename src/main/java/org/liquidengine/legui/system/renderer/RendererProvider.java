@@ -4,7 +4,7 @@ import java.util.List;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.image.Image;
-import org.liquidengine.legui.style.Border;
+import org.liquidengine.legui.style.border.Border;
 import org.liquidengine.legui.system.renderer.nvg.NvgRendererProvider;
 
 /**

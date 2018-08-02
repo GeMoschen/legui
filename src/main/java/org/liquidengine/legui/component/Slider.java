@@ -134,7 +134,7 @@ public class Slider extends Component {
     private void initialize(float value) {
         this.value = value;
         getStyle().getBackground().setColor(ColorConstants.transparent());
-        getStyle().setBorder(null);
+        getStyle().getBorder().setWidth(null);
         getListenerMap().addListener(ScrollEvent.class, new SliderScrollEventListener());
         getListenerMap().addListener(MouseClickEvent.class, new SliderMouseClickEventListener());
         getListenerMap().addListener(MouseDragEvent.class, new SliderMouseDragEventListener());

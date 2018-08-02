@@ -11,6 +11,7 @@ import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.CLIC
 import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.PRESS;
 import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.RELEASE;
 import static org.liquidengine.legui.input.Mouse.MouseButton.MOUSE_BUTTON_LEFT;
+import static org.liquidengine.legui.style.common.LineStyle.GROOVE;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -54,7 +55,6 @@ import org.liquidengine.legui.listener.MouseClickEventListener;
 import org.liquidengine.legui.style.Style;
 import org.liquidengine.legui.style.Style.DisplayType;
 import org.liquidengine.legui.style.Style.PositionType;
-import org.liquidengine.legui.style.border.SimpleLineBorder;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.font.FontRegistry;
 import org.liquidengine.legui.style.shadow.Shadow;
@@ -116,7 +116,8 @@ public class ExampleGui extends Panel {
         this.add(mouseTargetLabel = new Label("Hello Label 1", 10, height - 30, width - 20, 20));
 
         focusedGuiLabel = new Label("Hello Label 2", 10, height - 50, width - 20, 20);
-        focusedGuiLabel.getStyle().setBorder(new SimpleLineBorder(ColorConstants.red(), 1));
+        focusedGuiLabel.getStyle().getBorder().setColor(ColorConstants.red());
+        focusedGuiLabel.getStyle().getBorder().setWidth(1f);
         this.add(focusedGuiLabel);
 
         this.add(debugLabel = new Label("Debug Label", 10, height - 75, width - 20, 20));
@@ -319,7 +320,8 @@ public class ExampleGui extends Panel {
         scrollBar1.getStyle().getBackground().setColor(ColorConstants.white());
         scrollBar1.setScrollColor(ColorConstants.darkGray());
         scrollBar1.setArrowColor(ColorConstants.darkGray());
-        scrollBar1.getStyle().setBorder(new SimpleLineBorder(ColorConstants.red(), 1));
+        scrollBar1.getStyle().getBorder().setColor(ColorConstants.red());
+        scrollBar1.getStyle().getBorder().setWidth(1f);
         this.add(scrollBar1);
 
         ScrollBar scrollBar11 = new ScrollBar(385, 170, 7, 100, 20);
@@ -328,7 +330,8 @@ public class ExampleGui extends Panel {
         scrollBar11.setArrowsEnabled(false);
         scrollBar11.getStyle().getBackground().setColor(ColorConstants.white());
         scrollBar11.setScrollColor(ColorConstants.darkGray());
-        scrollBar11.getStyle().setBorder(new SimpleLineBorder(ColorConstants.darkGray(), 1));
+        scrollBar11.getStyle().getBorder().setColor(ColorConstants.darkGray());
+        scrollBar11.getStyle().getBorder().setWidth(1f);
         scrollBar11.getStyle().setBorderRadius(null);
         this.add(scrollBar11);
 
@@ -336,7 +339,8 @@ public class ExampleGui extends Panel {
         scrollBar2.setOrientation(Orientation.HORIZONTAL);
         scrollBar2.setVisibleAmount(20);
         scrollBar2.setArrowsEnabled(true);
-        scrollBar2.getStyle().setBorder(new SimpleLineBorder(ColorConstants.black(), 1));
+        scrollBar2.getStyle().getBorder().setColor(ColorConstants.black());
+        scrollBar2.getStyle().getBorder().setWidth(1f);
         scrollBar2.getStyle().getBackground().setColor(ColorConstants.darkGray());
         scrollBar2.setScrollColor(ColorConstants.white());
         scrollBar2.setArrowColor(ColorConstants.white());
@@ -462,9 +466,11 @@ public class ExampleGui extends Panel {
         imageWrapper.setTitleEnabled(true);
 
         imageView = new ImageView(new BufferedImage("org/liquidengine/legui/demo/1.jpg"));
-        imageView.setPosition(15, 5);
+        imageView.setPosition(20, 20);
         imageView.setSize(70, 70);
-        imageView.getStyle().setBorderRadius(10f);
+        imageView.getStyle().setBorderRadius(20f);
+        imageView.getStyle().getBorder().setWidth(10f);
+        imageView.getStyle().getBorder().setTopStyle(GROOVE);
         imageWrapper.getContainer().add(imageView);
         imageWrapper.setCloseable(false);
         return imageWrapper;

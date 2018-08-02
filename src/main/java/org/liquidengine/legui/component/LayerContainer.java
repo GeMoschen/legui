@@ -49,7 +49,7 @@ public class LayerContainer extends Component {
     private void initialize() {
         getListenerMap().addListener(WindowSizeEvent.class, new LayerContainerWindowSizeEventListener());
         getStyle().getBackground().setColor(ColorConstants.transparent());
-        getStyle().setBorder(null);
+        getStyle().getBorder().setWidth(null);
         Themes.getDefaultTheme().getThemeManager().getComponentTheme(LayerContainer.class).applyAll(this);
     }
 
