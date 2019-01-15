@@ -75,6 +75,6 @@ public class WidgetResizeButtonDragListener implements MouseDragEventListener {
         }
 
         widget.getSize().add(deltaSize);
-
+        widget.invalidateLayout();
     }
 }

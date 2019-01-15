@@ -1,10 +1,16 @@
 package org.liquidengine.legui.style.flex;
 
+import org.liquidengine.legui.component.Component;
+
 /**
  * CSS flex style analogue.
  */
 public class FlexStyle {
 
+    /**
+     * The component this style is attached to.
+     */
+    private final Component component;
     /**
      * Specifies the direction of the flexible items
      */
@@ -42,7 +48,8 @@ public class FlexStyle {
      */
     private float flexBasis;
 
-    public FlexStyle() {
+    public FlexStyle(Component component) {
+        this.component = component;
         this.flexDirection = FlexDirection.ROW;
         this.justifyContent = JustifyContent.FLEX_START;
         this.alignItems = AlignItems.STRETCH;
@@ -68,6 +75,7 @@ public class FlexStyle {
 
     public void setAlignSelf(AlignSelf alignSelf) {
         this.alignSelf = alignSelf;
+        this.component.invalidateLayout();
     }
 
     public int getFlexGrow() {
@@ -76,6 +84,7 @@ public class FlexStyle {
 
     public void setFlexGrow(int flexGrow) {
         this.flexGrow = flexGrow;
+        this.component.invalidateLayout();
     }
 
     public int getFlexShrink() {
@@ -84,6 +93,7 @@ public class FlexStyle {
 
     public void setFlexShrink(int flexShrink) {
         this.flexShrink = flexShrink;
+        this.component.invalidateLayout();
     }
 
     public float getFlexBasis() {
@@ -92,6 +102,7 @@ public class FlexStyle {
 
     public void setFlexBasis(float flexBasis) {
         this.flexBasis = flexBasis;
+        this.component.invalidateLayout();
     }
 
     public FlexDirection getFlexDirection() {
@@ -111,6 +122,7 @@ public class FlexStyle {
     public void setJustifyContent(JustifyContent justifyContent) {
         if (justifyContent != null) {
             this.justifyContent = justifyContent;
+            this.component.invalidateLayout();
         }
     }
 
@@ -121,6 +133,7 @@ public class FlexStyle {
     public void setAlignItems(AlignItems alignItems) {
         if (alignItems != null) {
             this.alignItems = alignItems;
+            this.component.invalidateLayout();
         }
     }
 
@@ -131,6 +144,7 @@ public class FlexStyle {
     public void setFlexWrap(FlexWrap flexWrap) {
         if (flexWrap != null) {
             this.flexWrap = flexWrap;
+            this.component.invalidateLayout();
         }
     }
 
@@ -141,6 +155,7 @@ public class FlexStyle {
     public void setAlignContent(AlignContent alignContent) {
         if (alignContent != null) {
             this.alignContent = alignContent;
+            this.component.invalidateLayout();
         }
     }
 

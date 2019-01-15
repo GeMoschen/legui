@@ -1,16 +1,5 @@
 package org.liquidengine.legui.component;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,6 +14,13 @@ import org.liquidengine.legui.intersection.RectangleIntersector;
 import org.liquidengine.legui.listener.ListenerMap;
 import org.liquidengine.legui.style.Style;
 import org.liquidengine.legui.theme.Themes;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * Component is an object that have graphical representation in legui system.
@@ -91,6 +87,11 @@ public abstract class Component implements Serializable {
      */
     private boolean tabFocusable = true;
 
+    /**
+     * Flag to signal the {@link org.liquidengine.legui.system.layout.LayoutManager} that the component should re-compute the layout.
+     */
+    private boolean invalidLayout = true;
+
     ////////////////////////////////
     //// CONTAINER BASE DATA
     ////////////////////////////////
@@ -98,19 +99,19 @@ public abstract class Component implements Serializable {
     /**
      * Component style.
      */
-    private Style style = new Style();
+    private Style style;
     /**
      * Component style.
      */
-    private Style hoveredStyle = new Style();
+    private Style hoveredStyle;
     /**
      * Component style.
      */
-    private Style focusedStyle = new Style();
+    private Style focusedStyle;
     /**
      * Component style.
      */
-    private Style pressedStyle = new Style();
+    private Style pressedStyle;
     /**
      * List of child components.
      */
@@ -146,6 +147,10 @@ public abstract class Component implements Serializable {
     public Component(Vector2f position, Vector2f size) {
         this.position = position;
         this.size = size;
+        this.style = new Style(this);
+        this.hoveredStyle = new Style(this);
+        this.focusedStyle = new Style(this);
+        this.pressedStyle = new Style(this);
         initialize();
     }
 
@@ -519,8 +524,45 @@ public abstract class Component implements Serializable {
     }
 
     /////////////////////////////////
+    //// LAYOUT METHODS
+    /////////////////////////////////
+
+    /**
+     * Returns whether the layout should get recalculated or not.
+     *
+     * @return the layout validation state of this component
+     * @see org.liquidengine.legui.system.layout.LayoutManager#layout(Component)
+     */
+    public boolean isLayoutInvalid() {
+        return invalidLayout;
+    }
+
+    /**
+     * Marks the layout of this component and its parent as "invalid", meaning that the layout should get recalculated.
+     * This method should be called if any property of the {@link Style style} gets changed.
+     */
+    public void invalidateLayout() {
+        // mark this component as invalid (this is needed for root components without parents)
+        this.invalidLayout = true;
+        // mark the parent as invalid (if we have one) because the parents layout needs a re-calculation of the layout
+        // if the style of this component changes.
+        if (getParent() != null) {
+            getParent().invalidLayout = true;
+        }
+    }
+
+    /**
+     * Marks the layout of this component as "valid". This method should only get called in
+     * {@link org.liquidengine.legui.system.layout.LayoutManager#layout(Component)}.
+     */
+    public void validateLayout() {
+        this.invalidLayout = false;
+    }
+
+    /////////////////////////////////
     //// CONTAINER METHODS
     /////////////////////////////////
+
 
     /**
      * Returns count of child components.
@@ -624,6 +666,7 @@ public abstract class Component implements Serializable {
             parent.remove(component);
         }
         component.setParent(this);
+        component.invalidateLayout();
     }
 
     /**
@@ -643,6 +686,8 @@ public abstract class Component implements Serializable {
                 if (removed) {
                     component.setParent(null);
                 }
+                component.invalidateLayout();
+                invalidateLayout();
                 return removed;
             }
         }

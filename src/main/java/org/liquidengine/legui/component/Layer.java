@@ -66,6 +66,7 @@ public class Layer<T extends Component> {
         if (frame != null) {
             frame.addLayer(this);
         }
+        this.getContainer().invalidateLayout();
     }
 
     /**
@@ -85,6 +86,7 @@ public class Layer<T extends Component> {
     public void setContainer(LayerContainer container) {
         container.setSize(new Vector2f(this.container.getSize()));
         this.container = container;
+        this.container.invalidateLayout();
     }
 
     /**

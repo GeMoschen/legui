@@ -33,7 +33,7 @@ public class SelectBoxClickListener implements MouseClickEventListener {
             if (collapsed) {
                 Vector2f layerSize = new Vector2f(frame.getContainer().getSize());
                 selectBoxLayer.getContainer().setSize(layerSize);
-
+                selectBoxLayer.getContainer().invalidateLayout();
                 frame.addLayer(selectBoxLayer);
             } else {
                 frame.removeLayer(selectBoxLayer);

@@ -1,6 +1,7 @@
 package org.liquidengine.legui.style;
 
 import org.joml.Vector4f;
+import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.style.border.SimpleLineBorder;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.flex.FlexStyle;
@@ -15,10 +16,11 @@ import org.liquidengine.legui.style.shadow.Shadow;
  */
 public class Style {
 
+    private Component component;
     private DisplayType display = DisplayType.MANUAL;
     private PositionType position = PositionType.ABSOLUTE;
 
-    private FlexStyle flexStyle = new FlexStyle();
+    private FlexStyle flexStyle;
     private Background background = new Background();
     private Border border = new SimpleLineBorder(ColorConstants.gray(), 1);
     private Font font = FontRegistry.getFont(FontRegistry.DEFAULT);
@@ -53,6 +55,15 @@ public class Style {
     private Float left;
 
     private Shadow shadow;
+
+    /**
+     * Constructor.
+     * @param component the component this style is attached to
+     */
+    public Style(Component component) {
+        this.component = component;
+        this.flexStyle = new FlexStyle(component);
+    }
 
     /**
      * Stroke color. Used to render stroke if component is focused.
@@ -211,6 +222,7 @@ public class Style {
      */
     public void setWidth(Float width) {
         this.width = width;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -224,6 +236,7 @@ public class Style {
 
     public void setHeight(Float height) {
         this.height = height;
+        this.component.invalidateLayout();
     }
 
     public Float getMinWidth() {
@@ -232,6 +245,7 @@ public class Style {
 
     public void setMinWidth(Float minWidth) {
         this.minWidth = minWidth;
+        this.component.invalidateLayout();
     }
 
     public Float getMinHeight() {
@@ -240,6 +254,7 @@ public class Style {
 
     public void setMinHeight(Float minHeight) {
         this.minHeight = minHeight;
+        this.component.invalidateLayout();
     }
 
     public Float getMaxWidth() {
@@ -248,6 +263,7 @@ public class Style {
 
     public void setMaxWidth(Float maxWidth) {
         this.maxWidth = maxWidth;
+        this.component.invalidateLayout();
     }
 
     public Float getMaxHeight() {
@@ -256,11 +272,11 @@ public class Style {
 
     public void setMaxHeight(Float maxHeight) {
         this.maxHeight = maxHeight;
+        this.component.invalidateLayout();
     }
 
     public void setPadding(Float topBottom, Float leftRight) {
-        paddingLeft = paddingRight = leftRight;
-        paddingTop = paddingBottom = topBottom;
+        setPadding(topBottom, leftRight, topBottom, leftRight);
     }
 
     public void setPadding(Float top, Float right, Float bottom, Float left) {
@@ -268,6 +284,7 @@ public class Style {
         paddingRight = right;
         paddingBottom = bottom;
         paddingLeft = left;
+        this.component.invalidateLayout();
     }
 
     public Float getPaddingTop() {
@@ -275,7 +292,7 @@ public class Style {
     }
 
     public void setPaddingTop(Float paddingTop) {
-        this.paddingTop = paddingTop;
+        setPadding(paddingTop, this.paddingRight, this.paddingBottom, this.paddingLeft);
     }
 
     public float getPaddingTopF() {
@@ -287,7 +304,7 @@ public class Style {
     }
 
     public void setPaddingBottom(Float paddingBottom) {
-        this.paddingBottom = paddingBottom;
+        setPadding(this.paddingTop, this.paddingRight, paddingBottom, this.paddingLeft);
     }
 
     public float getPaddingBottomF() {
@@ -299,7 +316,7 @@ public class Style {
     }
 
     public void setPaddingRight(Float paddingRight) {
-        this.paddingRight = paddingRight;
+        setPadding(this.paddingTop, paddingRight, this.paddingBottom, this.paddingLeft);
     }
 
     public float getPaddingRightF() {
@@ -311,7 +328,7 @@ public class Style {
     }
 
     public void setPaddingLeft(Float paddingLeft) {
-        this.paddingLeft = paddingLeft;
+        setPadding(this.paddingTop, this.paddingRight, this.paddingBottom, paddingLeft);
     }
 
     public float getPaddingLeftF() {
@@ -319,12 +336,11 @@ public class Style {
     }
 
     public void setMargin(Float topBottom, Float leftRight) {
-        marginLeft = marginRight = leftRight;
-        marginTop = marginBottom = topBottom;
+        setMargin(topBottom, leftRight, topBottom, leftRight);
     }
 
     public void setMargin(Float margin) {
-        marginLeft = marginRight = marginTop = marginBottom = margin;
+        setMargin(margin, margin, margin, margin);
     }
 
     public void setMargin(Float top, Float right, Float bottom, Float left) {
@@ -332,6 +348,7 @@ public class Style {
         marginRight = right;
         marginBottom = bottom;
         marginLeft = left;
+        this.component.invalidateLayout();
     }
 
     public Float getMarginTop() {
@@ -339,7 +356,7 @@ public class Style {
     }
 
     public void setMarginTop(Float marginTop) {
-        this.marginTop = marginTop;
+        setPadding(marginTop, this.marginRight, this.marginBottom, this.marginLeft);
     }
 
     public Float getMarginBottom() {
@@ -347,7 +364,7 @@ public class Style {
     }
 
     public void setMarginBottom(Float marginBottom) {
-        this.marginBottom = marginBottom;
+        setPadding(this.marginTop, this.marginRight, marginBottom, this.marginLeft);
     }
 
     public Float getMarginRight() {
@@ -355,7 +372,7 @@ public class Style {
     }
 
     public void setMarginRight(Float marginRight) {
-        this.marginRight = marginRight;
+        setPadding(this.marginTop, marginRight, this.marginBottom, this.marginLeft);
     }
 
     public Float getMarginLeft() {
@@ -363,7 +380,7 @@ public class Style {
     }
 
     public void setMarginLeft(Float marginLeft) {
-        this.marginLeft = marginLeft;
+        setPadding(this.marginTop, this.marginRight, this.marginBottom, marginLeft);
     }
 
     /**
@@ -382,6 +399,7 @@ public class Style {
      */
     public void setTop(Float top) {
         this.top = top;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -400,6 +418,7 @@ public class Style {
      */
     public void setBottom(Float bottom) {
         this.bottom = bottom;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -418,6 +437,7 @@ public class Style {
      */
     public void setRight(Float right) {
         this.right = right;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -436,6 +456,7 @@ public class Style {
      */
     public void setLeft(Float left) {
         this.left = left;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -457,6 +478,9 @@ public class Style {
             this.display = DisplayType.MANUAL;
         }
         this.display = display;
+        if (this.display != DisplayType.NONE) {
+            this.component.invalidateLayout();
+        }
     }
 
     /**
@@ -497,6 +521,7 @@ public class Style {
      */
     public void setBorder(Border border) {
         this.border = border;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -515,6 +540,7 @@ public class Style {
      */
     public void setFont(Font font) {
         this.font = font;
+        this.component.invalidateLayout();
     }
 
     /**
@@ -575,6 +601,7 @@ public class Style {
     public void setPosition(PositionType position) {
         if (position != null) {
             this.position = position;
+            this.component.invalidateLayout();
         }
     }
 
@@ -606,6 +633,7 @@ public class Style {
 
     public void setShadow(Shadow shadow) {
         this.shadow = shadow;
+        this.component.invalidateLayout();
     }
 
     public Vector4f getPadding() {
@@ -616,8 +644,7 @@ public class Style {
     }
 
     public void setPadding(Float padding) {
-        paddingLeft = paddingRight =
-            paddingTop = paddingBottom = padding;
+        setPadding(padding, padding, padding, padding);
     }
 
     /**

@@ -1,40 +1,9 @@
 package org.liquidengine.legui.demo;
 
-import static org.liquidengine.legui.component.optional.align.HorizontalAlign.CENTER;
-import static org.liquidengine.legui.component.optional.align.HorizontalAlign.LEFT;
-import static org.liquidengine.legui.component.optional.align.HorizontalAlign.RIGHT;
-import static org.liquidengine.legui.component.optional.align.VerticalAlign.BASELINE;
-import static org.liquidengine.legui.component.optional.align.VerticalAlign.BOTTOM;
-import static org.liquidengine.legui.component.optional.align.VerticalAlign.MIDDLE;
-import static org.liquidengine.legui.component.optional.align.VerticalAlign.TOP;
-import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.CLICK;
-import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.PRESS;
-import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.RELEASE;
-import static org.liquidengine.legui.input.Mouse.MouseButton.MOUSE_BUTTON_LEFT;
-
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.liquidengine.legui.animation.Animation;
-import org.liquidengine.legui.component.Button;
-import org.liquidengine.legui.component.CheckBox;
-import org.liquidengine.legui.component.Component;
-import org.liquidengine.legui.component.Dialog;
-import org.liquidengine.legui.component.ImageView;
-import org.liquidengine.legui.component.Label;
-import org.liquidengine.legui.component.Panel;
-import org.liquidengine.legui.component.PasswordInput;
-import org.liquidengine.legui.component.ProgressBar;
-import org.liquidengine.legui.component.RadioButton;
-import org.liquidengine.legui.component.RadioButtonGroup;
-import org.liquidengine.legui.component.ScrollBar;
-import org.liquidengine.legui.component.ScrollablePanel;
-import org.liquidengine.legui.component.SelectBox;
-import org.liquidengine.legui.component.Slider;
-import org.liquidengine.legui.component.TextArea;
-import org.liquidengine.legui.component.TextInput;
-import org.liquidengine.legui.component.ToggleButton;
-import org.liquidengine.legui.component.Tooltip;
-import org.liquidengine.legui.component.Widget;
+import org.liquidengine.legui.component.*;
 import org.liquidengine.legui.component.event.slider.SliderChangeValueEvent;
 import org.liquidengine.legui.component.event.slider.SliderChangeValueEventListener;
 import org.liquidengine.legui.component.optional.Orientation;
@@ -62,6 +31,11 @@ import org.liquidengine.legui.theme.Theme;
 import org.liquidengine.legui.theme.Themes;
 import org.liquidengine.legui.util.TextUtil;
 import org.lwjgl.glfw.GLFW;
+
+import static org.liquidengine.legui.component.optional.align.HorizontalAlign.*;
+import static org.liquidengine.legui.component.optional.align.VerticalAlign.*;
+import static org.liquidengine.legui.event.MouseClickEvent.MouseClickAction.*;
+import static org.liquidengine.legui.input.Mouse.MouseButton.MOUSE_BUTTON_LEFT;
 
 
 /**
@@ -424,19 +398,6 @@ public class ExampleGui extends Panel {
         selectBox.addElement("Just");
         selectBox.addElement("Hello");
         selectBox.addElement("World");
-        final int[] i = {1};
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
-        selectBox.addElement("World" + i[0]++);
         selectBox.setVisibleCount(5);
         selectBox.setElementHeight(20);
         this.add(selectBox);
@@ -444,7 +405,7 @@ public class ExampleGui extends Panel {
         Button sbb = new Button("Add element", 130, 260, 70, 20);
         sbb.getListenerMap().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
             if (event.getAction() == CLICK) {
-                selectBox.addElement("WorlD " + i[0]++);
+                selectBox.addElement("Dynamic " + (selectBox.getElements().size() + 1));
             }
         });
         this.add(sbb);
