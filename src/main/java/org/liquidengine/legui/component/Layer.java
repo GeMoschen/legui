@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joml.Vector2f;
+import org.liquidengine.legui.image.FBOTexture;
 import org.liquidengine.legui.intersection.Intersector;
 import org.liquidengine.legui.listener.ListenerMap;
 

@@ -10,6 +10,7 @@ import org.liquidengine.legui.image.Image;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.style.font.FontRegistry;
 import org.liquidengine.legui.system.context.Context;
+import org.liquidengine.legui.system.renderer.nvg.NvgContext;
 import org.liquidengine.legui.system.renderer.nvg.NvgImageRenderer;
 import org.liquidengine.legui.system.renderer.nvg.util.NvgShapes;
 import org.liquidengine.legui.system.renderer.nvg.util.NvgText;
@@ -28,21 +29,21 @@ public class NvgDefaultImageRenderer<I extends Image> extends NvgImageRenderer<I
      * @param position image position.
      * @param size image size.
      * @param context context.
-     * @param nanovg nanoVG context.
+     * @param nvgContext nanoVG context.
      * @param properties properties map.
      */
     @Override
-    protected void renderImage(I image, Vector2fc position, Vector2fc size, Map<String, Object> properties, Context context, long nanovg) {
+    protected void renderImage(I image, Vector2fc position, Vector2fc size, Map<String, Object> properties, Context context, NvgContext nvgContext) {
 
         float x = position.x();
         float y = position.y();
         float w = size.x();
         float h = size.y();
 
-        NvgShapes.drawRect(nanovg, position, size, ColorConstants.red);
-        NvgShapes.drawRectStroke(nanovg, position, size, ColorConstants.black, 1, 1);
+        NvgShapes.drawRect(nvgContext.getId(), position, size, ColorConstants.red);
+        NvgShapes.drawRectStroke(nvgContext.getId(), position, size, ColorConstants.black, 1, 1);
 
-        NvgText.drawTextLineToRect(nanovg, new Vector4f(x, y, w, h), true, HorizontalAlign.LEFT, VerticalAlign.MIDDLE,
+        NvgText.drawTextLineToRect(nvgContext.getId(), new Vector4f(x, y, w, h), true, HorizontalAlign.LEFT, VerticalAlign.MIDDLE,
                                    h / 3, FontRegistry.DEFAULT, IMAGE, ColorConstants.black());
 
     }

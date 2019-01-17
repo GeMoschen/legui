@@ -7,6 +7,7 @@ import org.liquidengine.legui.style.Border;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.system.context.Context;
 import org.liquidengine.legui.system.renderer.nvg.NvgBorderRenderer;
+import org.liquidengine.legui.system.renderer.nvg.NvgContext;
 import org.liquidengine.legui.system.renderer.nvg.util.NvgShapes;
 
 /**
@@ -15,7 +16,7 @@ import org.liquidengine.legui.system.renderer.nvg.util.NvgShapes;
 public class NvgDefaultBorderRenderer extends NvgBorderRenderer {
 
     @Override
-    protected void renderBorder(Border border, Component component, Context context, long nanovg) {
+    protected void renderBorder(Border border, Component component, Context context, NvgContext nvgContext) {
         if (!component.isVisible()) {
             return;
         }
@@ -28,10 +29,10 @@ public class NvgDefaultBorderRenderer extends NvgBorderRenderer {
         float w = size.x;
         float h = size.y;
 
-        NvgShapes.drawRectStroke(nanovg, new Vector4f(x, y, w, h), ColorConstants.black, 1);
+        NvgShapes.drawRectStroke(nvgContext.getId(), new Vector4f(x, y, w, h), ColorConstants.black, 1);
 
         if (component.isFocused()) {
-            NvgShapes.drawRectStroke(nanovg, new Vector4f(x - 1, y - 1, w + 2, h + 2), ColorConstants.red, 2);
+            NvgShapes.drawRectStroke(nvgContext.getId(), new Vector4f(x - 1, y - 1, w + 2, h + 2), ColorConstants.red, 2);
         }
     }
 }

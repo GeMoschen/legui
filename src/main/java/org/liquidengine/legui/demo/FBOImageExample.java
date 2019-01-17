@@ -5,7 +5,7 @@ import org.liquidengine.legui.animation.Animator;
 import org.liquidengine.legui.component.Frame;
 import org.liquidengine.legui.component.ImageView;
 import org.liquidengine.legui.component.Widget;
-import org.liquidengine.legui.image.FBOImage;
+import org.liquidengine.legui.image.FBOTexture;
 import org.liquidengine.legui.listener.processor.EventProcessor;
 import org.liquidengine.legui.style.Style.DisplayType;
 import org.liquidengine.legui.style.Style.PositionType;
@@ -15,22 +15,20 @@ import org.liquidengine.legui.system.context.DefaultCallbackKeeper;
 import org.liquidengine.legui.system.handler.processor.SystemEventProcessor;
 import org.liquidengine.legui.system.layout.LayoutManager;
 import org.liquidengine.legui.system.renderer.Renderer;
+import org.liquidengine.legui.system.renderer.nvg.NvgContext;
 import org.liquidengine.legui.system.renderer.nvg.NvgRenderer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
 import org.lwjgl.nanovg.NVGColor;
-import org.lwjgl.nanovg.NanoVGGL2;
-import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL30;
 
 import java.io.IOException;
 
+import static org.liquidengine.legui.system.renderer.nvg.NvgRenderer.NVG_CONTEXT;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
@@ -42,11 +40,6 @@ public class FBOImageExample {
     public static final int HEIGHT = 200;
     private static volatile boolean running = false;
 
-    private static int textureWidth = 200;
-    private static int textureHeight = 200;
-    private static int frameBufferID;
-    private static int textureID;
-    private static int renderBufferID;
 
     public static void main(String[] args) throws IOException {
         System.setProperty("joml.nounsafe", Boolean.TRUE.toString());
@@ -107,18 +100,10 @@ public class FBOImageExample {
         renderer.initialize();
 
         ////// rendering to texture and use this texture as image
-        long nvgContext = 0;
-        FBOImage fboTexture = null;
-        boolean isVersionNew = (glGetInteger(GL_MAJOR_VERSION) > 3) || (glGetInteger(GL_MAJOR_VERSION) == 3 && glGetInteger(GL_MINOR_VERSION) >= 2);
-        if (isVersionNew) {
-            int flags = NanoVGGL3.NVG_STENCIL_STROKES | NanoVGGL3.NVG_ANTIALIAS;
-            nvgContext = NanoVGGL3.nvgCreate(flags);
-        } else {
-            int flags = NanoVGGL2.NVG_STENCIL_STROKES | NanoVGGL2.NVG_ANTIALIAS;
-            nvgContext = NanoVGGL2.nvgCreate(flags);
-        }
-        if (nvgContext != 0) {
-            fboTexture = createFBOTexture();
+        FBOTexture fboTexture = null;
+//        FBOImage fboTexture = null;
+
+            fboTexture = new FBOTexture(200, 200);
 
             Widget widget = new Widget(10, 10, 100, 100);
             widget.setCloseable(false);
@@ -126,7 +111,7 @@ public class FBOImageExample {
             widget.setResizable(true);
             widget.getContainer().getStyle().setDisplay(DisplayType.FLEX);
 
-            ImageView imageView = new ImageView(fboTexture);
+            ImageView imageView = new ImageView(fboTexture.getImage());
             imageView.setPosition(10, 10);
             imageView.getStyle().setPosition(PositionType.RELATIVE);
             imageView.getStyle().getFlexStyle().setFlexGrow(1);
@@ -136,12 +121,11 @@ public class FBOImageExample {
             widget.getContainer().add(imageView);
 
             frame.getContainer().add(widget);
-        }
 
         while (running) {
 
             if (fboTexture != null) {
-                renderToFBO(nvgContext);
+                renderToFBO(fboTexture);
             }
 
             // Before rendering we need to update context with window size and window framebuffer size
@@ -192,17 +176,7 @@ public class FBOImageExample {
             // Run animations. Should be also called cause some components use animations for updating state.
             Animator.getInstance().runAnimations();
         }
-
-        if (nvgContext != 0) {
-            glDeleteRenderbuffers(renderBufferID);
-            glDeleteTextures(textureID);
-            glDeleteFramebuffers(frameBufferID);
-            if (isVersionNew) {
-                NanoVGGL3.nnvgDelete(nvgContext);
-            } else {
-                NanoVGGL2.nnvgDelete(nvgContext);
-            }
-        }
+        fboTexture.destroy();
 
         // And when rendering is ended we need to destroy renderer
         renderer.destroy();
@@ -211,58 +185,31 @@ public class FBOImageExample {
         glfwTerminate();
     }
 
-    public static FBOImage createFBOTexture() {
-
-        frameBufferID = GL30.glGenFramebuffers();
-        glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
-
-        // The texture we're going to render to
-        textureID = glGenTextures();
-        // "Bind" the newly created texture : all future texture functions will modify this texture
-        glBindTexture(GL_TEXTURE_2D, textureID);
-
-        // Give an empty image to OpenGL ( the last "0" )
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-
-        // Poor filtering. Needed !
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-        // The depth buffer
-        renderBufferID = glGenRenderbuffers();
-        glBindRenderbuffer(GL_RENDERBUFFER, renderBufferID);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, textureWidth, textureHeight);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBufferID);
-
-        // Set "textureID" as our colour attachment #0
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, textureID, 0);
-
-        // Set the list of draw buffers.
-        glDrawBuffer(GL_COLOR_ATTACHMENT0);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        return new FBOImage(textureID, textureWidth, textureHeight);
-    }
-
     private static long lastTime = System.nanoTime();
 
-    public static void renderToFBO(long nvgContext) {
-        // bind fbo
+    static boolean first = true;
 
+    public static void renderToFBO(final FBOTexture fboTexture) {
+//        if(!first) {
+//            return;
+//        }
+        first = false;
+        final int textureWidth = fboTexture.getWidth();
+        final int textureHeight = fboTexture.getHeight();
+
+        // bind fbo
         long thisTime = System.nanoTime();
         float angle = 5 * (lastTime - thisTime) / 1E10f;
 
-        glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
-        glViewport(0, 0, textureWidth, textureHeight);
+        fboTexture.bind();
 
-        glClearColor(0.3f, 0.5f, 0.7f, 0.0f);
-
-        // Clear screen
-        glClear(GL_COLOR_BUFFER_BIT);
+        // clear color & depth
+        fboTexture.setBackgroundColor(0.7f, 0.2f, 0f, 1.0f);
+        fboTexture.clearColor();
+        fboTexture.clearDepth();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        nvgBeginFrame(nvgContext, textureWidth, textureHeight, 1);
 
         try (
                 NVGColor nvgColorOne = NVGColor.calloc();
@@ -278,24 +225,22 @@ public class FBOImageExample {
             nvgColorTwo.b(0);
             nvgColorTwo.a(1);
 
-            nvgTranslate(nvgContext, textureWidth / 2f, textureHeight / 2f);
-            nvgRotate(nvgContext, angle);
+            final NvgContext nvgContext = (NvgContext) fboTexture.getContext().getContextData().get(NVG_CONTEXT);
+            nvgTranslate(nvgContext.getId(), textureWidth / 2f, textureHeight / 2f);
+            nvgRotate(nvgContext.getId(), angle);
 
-            nvgBeginPath(nvgContext);
-            nvgRect(nvgContext, -textureWidth / 4f, -textureHeight / 4f, textureWidth / 2f, textureHeight / 2f);
-            nvgStrokeColor(nvgContext, nvgColorTwo);
-            nvgStroke(nvgContext);
+            nvgBeginPath(nvgContext.getId());
+            nvgRect(nvgContext.getId(), -textureWidth / 4f, -textureHeight / 4f, textureWidth / 2f, textureHeight / 2f);
+            nvgStrokeColor(nvgContext.getId(), nvgColorTwo);
+            nvgStroke(nvgContext.getId());
 
-            nvgBeginPath(nvgContext);
-            nvgRect(nvgContext, -textureWidth / 4f, -textureHeight / 4f, textureWidth / 2f, textureHeight / 2f);
-            nvgFillColor(nvgContext, nvgColorOne);
-            nvgFill(nvgContext);
+            nvgBeginPath(nvgContext.getId());
+            nvgRect(nvgContext.getId(), -textureWidth / 4f, -textureHeight / 4f, textureWidth / 2f, textureHeight / 2f);
+            nvgFillColor(nvgContext.getId(), nvgColorOne);
+            nvgFill(nvgContext.getId());
         }
 
-        nvgEndFrame(nvgContext);
         glDisable(GL_BLEND);
-
-        // unbind fbo
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        fboTexture.unbind();
     }
 }

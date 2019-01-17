@@ -26,8 +26,8 @@ public abstract class NvgImageRenderer<I extends Image> extends ImageRenderer<I>
         if (image == null) {
             return;
         }
-        long nanovgContext = (long) context.getContextData().get(NVG_CONTEXT);
-        renderImage(image, position, size, properties, context, nanovgContext);
+        NvgContext nvgContext = (NvgContext) context.getContextData().get(NVG_CONTEXT);
+        renderImage(image, position, size, properties, context, nvgContext);
     }
 
     /**
@@ -37,8 +37,8 @@ public abstract class NvgImageRenderer<I extends Image> extends ImageRenderer<I>
      * @param position image position.
      * @param size image size.
      * @param context context.
-     * @param nanovg nanoVG context.
+     * @param nvgContext nanoVG context.
      * @param properties properties map.
      */
-    protected abstract void renderImage(I image, Vector2fc position, Vector2fc size, Map<String, Object> properties, Context context, long nanovg);
+    protected abstract void renderImage(I image, Vector2fc position, Vector2fc size, Map<String, Object> properties, Context context, NvgContext nvgContext);
 }

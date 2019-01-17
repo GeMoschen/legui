@@ -3,6 +3,7 @@ package org.liquidengine.legui.component;
 import org.joml.Vector2f;
 import org.liquidengine.legui.component.misc.listener.layercontainer.LayerContainerWindowSizeEventListener;
 import org.liquidengine.legui.event.WindowSizeEvent;
+import org.liquidengine.legui.image.FBOTexture;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.theme.Themes;
 
@@ -10,6 +11,8 @@ import org.liquidengine.legui.theme.Themes;
  * Layer container. By default it has {@link org.liquidengine.legui.listener.WindowSizeEventListener} which used to resize this container.
  */
 public class LayerContainer extends Component {
+
+    private FBOTexture fboTexture;
 
     /**
      * Default constructor. Used to create component instance without any parameters. <p> Also if you want to make it easy to use with Json
@@ -47,7 +50,8 @@ public class LayerContainer extends Component {
      * Used to initialize Layer container with default background and border.
      */
     private void initialize() {
-        getListenerMap().addListener(WindowSizeEvent.class, new LayerContainerWindowSizeEventListener());
+        fboTexture = new FBOTexture((int) getSize().x, (int) getSize().y);
+        getListenerMap().addListener(WindowSizeEvent.class, new LayerContainerWindowSizeEventListener(fboTexture));
         getStyle().getBackground().setColor(ColorConstants.transparent());
         getStyle().setBorder(null);
         Themes.getDefaultTheme().getThemeManager().getComponentTheme(LayerContainer.class).applyAll(this);

@@ -91,6 +91,7 @@ public abstract class Component implements Serializable {
      * Flag to signal the {@link org.liquidengine.legui.system.layout.LayoutManager} that the component should re-compute the layout.
      */
     private boolean invalidLayout = true;
+    private boolean invalidGraphics = true;
 
     ////////////////////////////////
     //// CONTAINER BASE DATA
@@ -549,6 +550,7 @@ public abstract class Component implements Serializable {
         if (getParent() != null) {
             getParent().invalidLayout = true;
         }
+        invalidateGraphics();
     }
 
     /**
@@ -557,6 +559,35 @@ public abstract class Component implements Serializable {
      */
     public void validateLayout() {
         this.invalidLayout = false;
+    }
+
+    /**
+     * Returns whether the graphics should get recalculated or not.
+     *
+     * @return the graphics validation state of this component
+     */
+    public boolean isGraphicInvalid() {
+        return invalidGraphics;
+    }
+
+    /**
+     * Marks the graphics of this component and its parent as "invalid", meaning that the graphics should get repainted.
+     */
+    public void invalidateGraphics() {
+        // mark this component as invalid (this is needed for root components without parents)
+        this.invalidGraphics = true;
+        // mark the parent as invalid (if we have one) because the parents layout needs a re-calculation of the layout
+        // if the style of this component changes.
+        if (getParent() != null) {
+            getParent().invalidGraphics = true;
+        }
+    }
+
+    /**
+     * Marks the graphics of this component as "valid".
+     */
+    public void validateGraphics() {
+        this.invalidGraphics = false;
     }
 
     /////////////////////////////////

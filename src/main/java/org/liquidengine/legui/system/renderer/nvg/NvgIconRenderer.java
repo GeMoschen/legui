@@ -24,8 +24,8 @@ public abstract class NvgIconRenderer<I extends Icon> extends IconRenderer<I> {
         if (icon == null) {
             return;
         }
-        long nanovgContext = (long) context.getContextData().get(NVG_CONTEXT);
-        renderIcon(icon, component, context, nanovgContext);
+        NvgContext nvgContext = (NvgContext) context.getContextData().get(NVG_CONTEXT);
+        renderIcon(icon, component, context, nvgContext);
     }
 
     /**
@@ -34,8 +34,8 @@ public abstract class NvgIconRenderer<I extends Icon> extends IconRenderer<I> {
      * @param icon icon to render.
      * @param component component - icon owner.
      * @param context context.
-     * @param nanovg nanoVG context.
+     * @param nvgContext nanoVG context.
      */
-    protected abstract void renderIcon(I icon, Component component, Context context, long nanovg);
+    protected abstract void renderIcon(I icon, Component component, Context context, NvgContext nvgContext);
 
 }

@@ -14,13 +14,13 @@ public abstract class NvgBorderRenderer<B extends Border> extends BorderRenderer
 
     @Override
     public void renderBorder(B border, Component component, Context context) {
-        long nanovgContext = (long) context.getContextData().get(NVG_CONTEXT);
+        NvgContext nvgContext = (NvgContext) context.getContextData().get(NVG_CONTEXT);
         if (!border.isEnabled()) {
             return;
         }
-        renderBorder(border, component, context, nanovgContext);
+        renderBorder(border, component, context, nvgContext);
     }
 
-    protected abstract void renderBorder(B border, Component component, Context context, long nanovg);
+    protected abstract void renderBorder(B border, Component component, Context context, NvgContext nvgContext);
 
 }

@@ -8,6 +8,7 @@ import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.system.context.Context;
 import org.liquidengine.legui.system.renderer.ImageRenderer;
+import org.liquidengine.legui.system.renderer.nvg.NvgContext;
 import org.liquidengine.legui.system.renderer.nvg.NvgIconRenderer;
 
 /**
@@ -16,7 +17,7 @@ import org.liquidengine.legui.system.renderer.nvg.NvgIconRenderer;
 public class NvgImageIconRenderer<I extends ImageIcon> extends NvgIconRenderer<I> {
 
     @Override
-    protected void renderIcon(I icon, Component component, Context context, long nanovg) {
+    protected void renderIcon(I icon, Component component, Context context, NvgContext nvgContext) {
         if (!component.isVisible() || icon == null || icon.getImage() == null) {
             return;
         }

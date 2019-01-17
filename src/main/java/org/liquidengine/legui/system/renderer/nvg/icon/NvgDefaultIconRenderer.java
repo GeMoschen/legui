@@ -6,6 +6,7 @@ import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.system.context.Context;
+import org.liquidengine.legui.system.renderer.nvg.NvgContext;
 import org.liquidengine.legui.system.renderer.nvg.NvgIconRenderer;
 import org.liquidengine.legui.system.renderer.nvg.util.NvgShapes;
 
@@ -15,7 +16,7 @@ import org.liquidengine.legui.system.renderer.nvg.util.NvgShapes;
 public class NvgDefaultIconRenderer extends NvgIconRenderer {
 
     @Override
-    protected void renderIcon(Icon icon, Component component, Context context, long nanovg) {
+    protected void renderIcon(Icon icon, Component component, Context context, NvgContext nvgContext) {
         if (!component.isVisible()) {
             return;
         }
@@ -36,7 +37,7 @@ public class NvgDefaultIconRenderer extends NvgIconRenderer {
         float w = iconSize.x;
         float h = iconSize.y;
 
-        NvgShapes.drawRect(nanovg, new Vector4f(x, y, w, h), ColorConstants.red, component.getStyle().getBorderRadius());
-        NvgShapes.drawRectStroke(nanovg, new Vector4f(x, y, w, h), ColorConstants.black, 1, component.getStyle().getBorderRadius());
+        NvgShapes.drawRect(nvgContext.getId(), new Vector4f(x, y, w, h), ColorConstants.red, component.getStyle().getBorderRadius());
+        NvgShapes.drawRectStroke(nvgContext.getId(), new Vector4f(x, y, w, h), ColorConstants.black, 1, component.getStyle().getBorderRadius());
     }
 }

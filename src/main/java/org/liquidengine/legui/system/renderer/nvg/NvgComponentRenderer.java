@@ -34,7 +34,7 @@ public abstract class NvgComponentRenderer<C extends Component> extends Componen
      */
     @Override
     public void renderComponent(C component, Context context) {
-        long nanovgContext = (long) context.getContextData().get(NVG_CONTEXT);
+        long nanovgContext = ((NvgContext)context.getContextData().get(NVG_CONTEXT)).getId();
         if (!component.isVisible() || !Utilites.visibleInParents(component)) {
             return;
         }
